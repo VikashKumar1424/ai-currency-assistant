@@ -1,6 +1,6 @@
 # ai-currency-converter / AI Currency Assistant
 
-A minimal full-stack example that demonstrates a TypeScript (Vite) frontend and a Python (FastAPI-ready) backend which can be extended to use a generative AI service for enhancing currency-conversion workflows. This README has been expanded using the author's Rag_WeatherForecasting README as a reference and includes full local development, run, and test instructions.
+A minimal full-stack example that demonstrates a TypeScript (Vite) frontend and a Python (FastAPI-ready) backend which can be extended to use a generative AI service for enhancing currency-conversion workflows.
 
 [![Repo size](https://img.shields.io/github/repo-size/VikashKumar1424/ai-currency-converter)](https://github.com/VikashKumar1424/ai-currency-converter)
 [![Languages](https://img.shields.io/github/languages/top/VikashKumar1424/ai-currency-converter)](https://github.com/VikashKumar1424/ai-currency-converter)
