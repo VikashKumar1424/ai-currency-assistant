@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <meta
+        name="description"
+        content="AI powered currency converter using Gemini"
+    />
+
+    <title>AI Currency Assistant</title>
+</head>
+
+<body>
+
+    <main class="app">
+
+        <section class="hero">
+
+            <div class="logo">
+                💱
+            </div>
+
+            <h1>
+                AI Currency Assistant
+            </h1>
+
+            <p>
+                Convert currencies with live exchange rates
+                and Gemini-powered insights.
+            </p>
+
+        </section>
+
+
+        <section class="converter-card">
+
+            <div class="amount-section">
+
+                <label for="amount">
+                    Amount
+                </label>
+
+                <input
+                    id="amount"
+                    type="number"
+                    value="100"
+                    min="0.01"
+                    step="0.01"
+                />
+
+            </div>
+
+
+            <div class="currency-row">
+
+                <div class="currency-field">
+
+                    <label for="fromCurrency">
+                        From
+                    </label>
+
+                    <select id="fromCurrency">
+                    </select>
+
+                </div>
+
+
+                <button
+                    id="swapButton"
+                    class="swap-button"
+                    aria-label="Swap currencies"
+                >
+                    ⇄
+                </button>
+
+
+                <div class="currency-field">
+
+                    <label for="toCurrency">
+                        To
+                    </label>
+
+                    <select id="toCurrency">
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="convertButton"
+                class="convert-button"
+            >
+                Convert Currency
+            </button>
+
+
+            <div
+                id="loading"
+                class="loading hidden"
+            >
+                Converting...
+            </div>
+
+
+            <div
+                id="error"
+                class="error hidden"
+            >
+            </div>
+
+        </section>
+
+
+        <section
+            id="resultCard"
+            class="result-card hidden"
+        >
+
+            <div class="result-label">
+                Conversion Result
+            </div>
+
+            <div
+                id="conversionResult"
+                class="conversion-result"
+            >
+            </div>
+
+            <div
+                id="exchangeRate"
+                class="exchange-rate"
+            >
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="ai-header">
+                <span>🤖</span>
+                Gemini Insight
+            </div>
+
+            <div
+                id="aiExplanation"
+                class="ai-explanation"
+            >
+            </div>
+
+            <div
+                id="updatedAt"
+                class="updated-at"
+            >
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            <span>
+                Powered by Gemini
+            </span>
+
+            <span>•</span>
+
+            <span>
+                ExchangeRate-API
+            </span>
+
+        </footer>
+
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+
+</body>
+
+</html>
