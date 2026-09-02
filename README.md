@@ -1,4 +1,4 @@
-# ai-currency-converter / AI Currency Assistant
+# LLM-currency-converter / AI Currency Assistant
 
 A minimal full-stack example that demonstrates a TypeScript (Vite) frontend and a Python (FastAPI-ready) backend which can be extended to use a generative AI service for enhancing currency-conversion workflows.
 
