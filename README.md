@@ -1,82 +1,74 @@
-# ai-currency-converter
+# ai-currency-converter / AI Currency Assistant
 
-A minimal full-stack example that demonstrates a TypeScript (Vite) frontend and a Python (FastAPI-ready) backend which can be extended to use a generative AI service for enhancing currency-conversion results.
-
+A minimal full-stack example that demonstrates a TypeScript (Vite) frontend and a Python (FastAPI-ready) backend which can be extended to use a generative AI service for enhancing currency-conversion workflows. This README has been expanded using the author's Rag_WeatherForecasting README as a reference and includes full local development, run, and test instructions.
 
 [![Repo size](https://img.shields.io/github/repo-size/VikashKumar1424/ai-currency-converter)](https://github.com/VikashKumar1424/ai-currency-converter)
 [![Languages](https://img.shields.io/github/languages/top/VikashKumar1424/ai-currency-converter)](https://github.com/VikashKumar1424/ai-currency-converter)
 
-
 Table of Contents
-- [About](#about)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Tech stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Quickstart](#quickstart)
-  - [Backend (Python)](#backend-python)
-  - [Frontend (TypeScript / Vite)](#frontend-typescript--vite)
-  - [Run both (development)](#run-both-development)
-- [Environment variables](#environment-variables)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-
+- About
+- Features
+- Architecture
+- Tech stack
+- Prerequisites
+- Quickstart
+  - Backend (Python)
+  - Frontend (TypeScript / Vite)
+  - Run both (development)
+- Environment variables
+- Testing
+- Troubleshooting
+- Deployment
+- Contributing
+- License
 
 About
 -----
 
-This repository contains a frontend app (frontend/) built with TypeScript and Vite, and a Python backend (backend/) that is structured to use FastAPI and generative AI libraries. The project is intended as a starting point for building an AI-assisted currency converter: the backend can call an external AI API (for example Google GenAI or OpenAI) and/or an exchange rates API, while the frontend provides a UI to request conversions.
-
+This repository contains a frontend app (frontend/) built with TypeScript and Vite, and a Python backend (backend/) that is structured to use FastAPI and generative AI libraries. The project is intended as a developer-friendly starting point for building an AI-augmented currency conversion assistant.
 
 Features
 --------
 - Frontend: Vite + TypeScript project scaffold (dev/build/preview scripts in frontend/package.json)
-- Backend: Python project using pyproject.toml (dependencies include fastapi, google-genai, uvicorn)
+- Backend: Python project using pyproject.toml (dependencies include FastAPI, an LLM client, and uv for running tasks)
 - Ready to extend with an external AI provider and a currency rates provider
+- Example health and conversion API endpoints for local development
 
+Repository layout
+
+```
+ai-currency-assistant/
+│
+├── backend/
+│   ├── app/
+│   ├── tests/
+│   ├── pyproject.toml
+│   ├── uv.lock
+│   ├── .env.example
+│   └── README.md
+│
+├── frontend/
+│   ├── src/
+│   ├── index.html
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── .gitignore
+├── README.md
+└── LICENSE
+```
 
 Architecture
 ------------
 
-Mermaid diagram (render in GitHub or other Mermaid-capable renderers):
-
-```mermaid
-flowchart LR
-  Browser["User Browser (Frontend)"]
-  Frontend["Vite / TypeScript Frontend"]
-  Backend["Python Backend (FastAPI)"]
-  GenAI["Generative AI API (Google GenAI / OpenAI)"]
-  RatesAPI["Exchange Rates API (optional)"]
-  Cache["Optional Cache / DB"]
-
-  Browser --> Frontend
-  Frontend -->|HTTP / JSON| Backend
-  Backend -->|AI request| GenAI
-  Backend -->|Rates request| RatesAPI
-  Backend -->|Cache| Cache
-  GenAI --> Backend
-  RatesAPI --> Backend
-```
-
-ASCII fallback:
-
-Browser -> Frontend (Vite/TS)
-Frontend -> Backend (HTTP/JSON)
-Backend -> External AI APIs (Google GenAI / OpenAI)
-Backend -> Exchange Rates API (optional)
-Backend -> Cache / DB (optional)
-
+Browser (Vite/TypeScript Frontend) -> HTTP/JSON -> Python Backend (FastAPI) -> Optional external APIs (AI provider, Exchange Rates API) -> Optional cache/storage
 
 Tech stack
 ----------
 - Frontend: TypeScript, Vite
-- Backend: Python (pyproject.toml), FastAPI (dependency present), uvicorn for serving
-- AI client: google-genai (listed in backend/pyproject.toml)
+- Backend: Python (pyproject.toml), FastAPI (if implemented), uvicorn for serving
+- AI client: google-genai or other provider (configurable)
 - Dev/test: pytest, httpx (dev dependencies)
-
 
 Prerequisites
 -------------
@@ -84,7 +76,6 @@ Prerequisites
 - Python 3.12+ (pyproject requires >=3.12)
 - Git
 - API credentials (for the AI provider and optional exchange rates provider) if you want to exercise that functionality
-
 
 Quickstart
 ----------
@@ -96,10 +87,10 @@ git clone https://github.com/VikashKumar1424/ai-currency-converter.git
 cd ai-currency-converter
 ```
 
-Backend (Python)
------------------
+Backend (Python) — Terminal 1
+----------------------------
 
-1. Change into the backend folder and create a virtual environment:
+1. Change into the backend folder and create / copy a virtual environment (or use the repository's recommended `uv` workflow):
 
 ```bash
 cd backend
@@ -110,7 +101,7 @@ source .venv/bin/activate
 # .\.venv\Scripts\Activate.ps1
 ```
 
-2. Upgrade pip and install the package and dependencies defined in pyproject.toml:
+2. Install dependencies (using pip) or follow the `uv` workflow if used by this project:
 
 ```bash
 python -m pip install --upgrade pip
@@ -118,39 +109,83 @@ pip install .
 # For development extras (tests etc): pip install "[dev]" if defined
 ```
 
-3. Configure environment variables: create `backend/.env` (see [Environment variables](#environment-variables)).
-
-4. Run the backend:
-
-- The project defines a console script `backend = "backend:main"` in pyproject.toml. After installing, you can run:
+3. Configure environment variables: copy the example env and edit secrets (do NOT commit `.env`):
 
 ```bash
-backend
+cp .env.example .env
+# Edit backend/.env and set required keys, e.g. GEMINI_API_KEY or GENAI_API_KEY
 ```
 
-This will run the package `backend`'s `main()` function (the repository currently includes a placeholder implementation that prints a message). If you implement a FastAPI app in the backend, use uvicorn to run it. Example (replace the import path with the actual module exposing the FastAPI `app`):
+4. Verify the API key is loaded by the backend configuration (this prints only a boolean, not the key):
 
 ```bash
-uvicorn backend.src.backend:app --reload --port 8000
+uv run python -c "from app.config import GEMINI_API_KEY; print('Gemini key loaded:', bool(GEMINI_API_KEY))"
 ```
 
-If uvicorn import fails, inspect backend/src to find the module that exposes `app = FastAPI()` and update the import path accordingly.
+Expected output:
 
-Frontend (TypeScript / Vite)
----------------------------
+```
+Gemini key loaded: True
+```
 
-1. Change into the frontend folder and install dependencies:
+5. Start the backend (development server with auto-reload):
 
 ```bash
-cd ../frontend
+uv run uvicorn app.main:app --reload --port 8000
+```
+
+Keep this terminal running.
+
+Test backend (Terminal 2)
+-------------------------
+
+Open another terminal and run quick smoke tests against the running backend:
+
+- Health endpoint
+
+```bash
+curl http://localhost:8000/api/health
+```
+
+Expected response (HTTP 200):
+
+```json
+{
+  "status": "ok",
+  "service": "AI Currency Assistant"
+}
+```
+
+- Conversion request (example)
+
+```bash
+curl -X POST http://localhost:8000/api/convert \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 100,
+    "from_currency": "USD",
+    "to_currency": "INR"
+  }'
+```
+
+Expected: HTTP 200 with JSON containing the converted amount and any metadata.
+
+If the above calls return 200 with valid data, your backend is running correctly.
+
+Frontend (Terminal 3)
+---------------------
+
+1. Change to the frontend directory and install dependencies:
+
+```bash
+cd frontend
 npm install
-# or pnpm install
-# or yarn install
 ```
 
-2. Create a frontend environment file `frontend/.env.local` and set the API base URL (example below):
+2. Create a frontend environment file for Vite (optional):
 
 ```env
+# frontend/.env.local
 VITE_API_BASE_URL=http://localhost:8000
 ```
 
@@ -160,13 +195,15 @@ VITE_API_BASE_URL=http://localhost:8000
 npm run dev
 ```
 
-Open the URL printed by Vite (commonly http://localhost:5173).
+Open the app in your browser (default Vite port):
+
+http://localhost:5173
 
 Run both (development)
 ----------------------
 
-1. Start the backend (port 8000): `cd backend` and run the console script or `uvicorn` as above.
-2. Start the frontend (Vite dev server): `cd frontend` and `npm run dev`.
+1. Start the backend (port 8000) as shown above.
+2. Start the frontend (Vite dev server) as shown above.
 3. If you encounter CORS issues, either enable CORS in the backend or use a Vite proxy. Example Vite proxy snippet in `vite.config.ts`:
 
 ```ts
@@ -183,15 +220,14 @@ export default defineConfig({
 });
 ```
 
-
 Environment variables
 ---------------------
 Create `backend/.env` and `frontend/.env.local` as needed. Example backend `.env`:
 
 ```env
 # backend/.env
+GEMINI_API_KEY=your_genai_api_key_here
 GENAI_API_KEY=your_genai_api_key_here
-OPENAI_API_KEY=your_openai_api_key_here
 EXCHANGE_RATES_API_KEY=your_rates_api_key_here
 PORT=8000
 ```
@@ -202,41 +238,47 @@ Example frontend `.env.local`:
 VITE_API_BASE_URL=http://localhost:8000
 ```
 
-
 Testing
 -------
 
-Backend tests (if any) can be run with pytest. From repository root:
+- Backend tests (pytest):
 
 ```bash
 cd backend
-pytest
+uv run pytest
 ```
 
+- Frontend tests (if present) — see `frontend/package.json` scripts.
+
+Troubleshooting
+---------------
+
+- Backend prints an informational message when the package console script is invoked — if you expect an API, ensure the FastAPI `app` object is exported and run uvicorn with the correct import path.
+- Import errors on uvicorn: double-check the Python package import path and the module that contains the `app` object.
+- Port conflicts: choose different ports or stop services occupying the port.
+- CORS: configure FastAPI's CORS middleware or use the Vite proxy during development.
 
 Deployment
 ----------
+
 - Frontend: build with `cd frontend && npm run build` and serve the `dist` directory with a static web server or include as static assets in the backend.
 - Backend: containerize or deploy to any Python-capable hosting. Ensure environment variables are set and that network routing/CORS are configured.
 
 Optional: create Dockerfiles for frontend and backend and a `docker-compose.yml` that wires ports and env vars.
 
-Troubleshooting
----------------
-- Backend prints "Hello from backend!" when running the packaged console script — this indicates the `backend:main` entrypoint is installed and working. If you expect an API, implement and expose a FastAPI `app` instance in `backend/src`.
-- Import errors on uvicorn: double-check the Python package import path and the module that contains the `app` object.
-- Port conflicts: choose different ports or stop services occupying the port.
-- CORS: configure FastAPI's CORS middleware or use Vite proxy during development.
+Security & secrets
+------------------
+- Keep API keys in environment variables or a secret manager (GitHub Secrets, Vault).
+- Rotate keys regularly and avoid printing secrets to logs.
 
-Contributing
-------------
-Contributions are welcome. Please open issues and PRs. When opening a PR, include steps to reproduce and/or tests.
+Acknowledgements & reference
+----------------------------
+This README was adapted and extended using the README and documentation style from the Rag_WeatherForecasting project by @VikashKumar1424 (https://github.com/VikashKumar1424/Rag_WeatherForecasting).
 
 License
 -------
-Specify a license for the project (e.g., MIT). Add a LICENSE file to the repo.
+See LICENSE at the repository root.
 
-
-Acknowledgements
-----------------
-This template is provided to help onboard new contributors and to document how to run and extend this example project.
+Author
+------
+[VikashKumar1424](https://github.com/VikashKumar1424)
