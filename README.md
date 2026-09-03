@@ -271,10 +271,6 @@ Security & secrets
 - Keep API keys in environment variables or a secret manager (GitHub Secrets, Vault).
 - Rotate keys regularly and avoid printing secrets to logs.
 
-Acknowledgements & reference
-----------------------------
-This README was adapted and extended using the README and documentation style from the Rag_WeatherForecasting project by @VikashKumar1424 (https://github.com/VikashKumar1424/Rag_WeatherForecasting).
-
 License
 -------
 See LICENSE at the repository root.
